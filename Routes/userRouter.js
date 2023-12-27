@@ -5,5 +5,6 @@ const router=express.Router();
 
   const tryCatchMiddleware =require("../Middlewares/tryCatchMiddleware ");
   router
-  .post('/register',tryCatchMiddleware(userContoroll.userRegistraion))
+  .post('/register',tryCatchMiddleware(userContoroll.userRegistration));
+  .post("/login",tryCatchMiddleware(userController.userLogin))
   module.exports=router;
