@@ -9,4 +9,4 @@ const tryCatchMiddleware=(tryCatchandler)=>{
        }
         
 } 
-module.exports=tryCatchMiddleware
+module.exports=tryCatchMiddleware;

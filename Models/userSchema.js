@@ -6,9 +6,9 @@ const userSchema=new mongoos.Schema({
        email:"String",
        username:"String",
        password:"String",
-       cart: [{type:mongoos.Schema.ObjectId, ref:"Product"}],
-       wishlist:[{type:mongoos.Schema.ObjectId,ref:"Product"}],
-       orders:[]
+    //    cart: [{type:mongoos.Schema.ObjectId, ref:"Product"}],
+    //    wishlist:[{type:mongoos.Schema.ObjectId,ref:"Product"}],
+    //    orders:[]
 })
 userSchema.pre("save", async function(next) {
     const user = this;

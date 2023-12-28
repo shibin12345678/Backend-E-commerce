@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const mongoos=require("mongoose");
 const express=require("express");
 const app=express();
@@ -8,9 +10,6 @@ const userRouter=require("./Routes/userRouter");
 //Error Handler
 const ErrorHandler=require("./Middlewares/ErrorHandler");
 const bodyParser=require("body-parser");
-
-
-
 
 mongoos.connect("mongodb://localhost:27017/e-commerce", {
   useNewUrlParser: true,
