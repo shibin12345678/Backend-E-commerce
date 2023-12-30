@@ -6,7 +6,7 @@ const app=express();
 const PORT=3000;
 //Routes 
 const userRouter=require("./Routes/userRouter");
-//const adminRouter=require("./Routes/adminRouter");
+const adminRouter=require("./Routes/adminRouter");
 //Error Handler
 const ErrorHandler=require("./Middlewares/ErrorHandler");
 const bodyParser=require("body-parser");
@@ -21,7 +21,7 @@ app.use(bodyParser.json())
 app.use(express.json());
 
 app.use("/api/user",userRouter);
-// app.use("/api/admin",adminRouter);
+app.use("/api/admin",adminRouter);
 
 
 // app.use(ErrorHandler);

@@ -8,8 +8,13 @@ module.exports=function verifyToken(req,res,next){
       }
       jwt.verify(token,process.env.ADMIN_ACCES_TOKEN_SECRET,(err,decode)=>{
            if(err){
-               return res.status(401).json({error:"Unatherized"})
+     return res.status(401).json({error:"Unatherized"});
            }
+           if(err){
+                return res.status(401).json({error:"Unatherized"})
+           }
+           req.email=decode.email
+           next()
       })
 
 }
