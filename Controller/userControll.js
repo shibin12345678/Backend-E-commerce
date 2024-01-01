@@ -73,7 +73,7 @@ module.exports = {
         .json({ error: 'error', message: 'Incorrect password' });
     }
 
-      const token = jwt.sign(
+      const token =jwt.sign(
        
       { username: user.username },
       process.env.USER_ACCESS_TOKEN_SECRET,
@@ -99,7 +99,8 @@ module.exports = {
 
 
 viewProduct:async(req,res)=>{
-  const products = await product.find();
+  const products = await products.find();
+  console.log(viewProduct)
        if(!products){
             res.status(404).send({status:'error',message:"product not fount"})
        }
@@ -109,6 +110,5 @@ viewProduct:async(req,res)=>{
                message:"Succes fully  fetched data",
                data:products,
               
-
        });
 }

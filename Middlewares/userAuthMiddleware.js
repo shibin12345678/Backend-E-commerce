@@ -8,7 +8,7 @@ module.exports=function verifyToken(req,res,next){
          if(err){
               return  res.status(401).json({error: "Unathorazed😠"})
          }
-         req.username=decode.username
+         req.username=decode.username;
          next()
       })
 }

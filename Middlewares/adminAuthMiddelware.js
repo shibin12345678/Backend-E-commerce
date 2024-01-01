@@ -2,7 +2,10 @@ const jwt=require("jsonwebtoken");
 
 
 module.exports=function verifyToken(req,res,next){
-      const token=req.headers['authorization']
+      const Btoken=req.headers['authorization']
+      const token = Btoken.split(' ')[1];
+      console.log(token)
+
       if(!token){
            return  res.status(403).json({error:"No token provaided"})
       }

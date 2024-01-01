@@ -1,7 +1,6 @@
 const express=require("express");
 const router=express.Router();
 const  verifyToken=require("../Middlewares/userAuthMiddleware");
-
 const  userContoroll=require("../Controller/userControll");
 const tryCatchMiddleware =require("../Middlewares/tryCatchMiddleware ");
   router
@@ -9,5 +8,8 @@ const tryCatchMiddleware =require("../Middlewares/tryCatchMiddleware ");
   .post("/login",tryCatchMiddleware(userContoroll.userLogin))
   .use(verifyToken)
   .get("/products",tryCatchMiddleware(userContoroll.viewProduct))
+
+
+
 
   module.exports=router;
