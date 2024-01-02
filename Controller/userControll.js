@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../Models/userSchema');
+const Products = require('../Models/productSchema')
 const { joiUserSchema } = require('../Models/validationSchema');
 
 
@@ -30,8 +31,6 @@ module.exports = {
       status: 'status',
       message: 'User registration successful',
     });
-
-
 
   },
 
@@ -72,7 +71,6 @@ module.exports = {
         .status(401)
         .json({ error: 'error', message: 'Incorrect password' });
     }
-
       const token =jwt.sign(
        
       { username: user.username },
@@ -81,9 +79,6 @@ module.exports = {
         expiresIn: 86400,
       },
       console.log(process.env.USER_ACCESS_TOKEN_SECRET)
-      
-      
-    
     );
     console.log(token)
 
@@ -93,14 +88,12 @@ module.exports = {
     data: token,
     });
   },
-};
-
-//view product by category
-
-
+  
+  //view product by category
 viewProduct:async(req,res)=>{
-  const products = await products.find();
-  console.log(viewProduct)
+
+  const products = await Products.find();
+  
        if(!products){
             res.status(404).send({status:'error',message:"product not fount"})
        }
@@ -111,4 +104,17 @@ viewProduct:async(req,res)=>{
                data:products,
               
        });
+}
+};
+ 
+
+viewcontent:async(req,res)=>{
+     const productss=await  Products.find("email");
+       if(!"email"){
+          res.status(404).send("this not headre");
+       }
+       res.status(200).send({
+           status:"succes",
+           message
+       })
 }

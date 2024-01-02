@@ -17,9 +17,7 @@ mongoos.connect("mongodb://localhost:27017/e-commerce", {
 });
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
-
 app.use(express.json());
-
 app.use("/api/user",userRouter);
 app.use("/api/admin",adminRouter);
 // app.use(ErrorHandler);

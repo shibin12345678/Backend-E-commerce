@@ -1,14 +1,21 @@
-const jwt=require("jsonwebtoken");
-module.exports=function verifyToken(req,res,next){
-      const token=req.headers["authorization"]
+
+  const jwt=require("jsonwebtoken");
+ module.exports=function verifyToken(req,res,next){
+      const Btoken=req.headers['authorization']
+      const token = Btoken.split(' ')[1];
+      console.log(token,'provide')
+
       if(!token){
-          return res.status(403).send({error:"NO Token Provaided"})
+           return  res.status(403).json({error:"No token provaided"})
       }
-      jwt.verify(token,process.env.USER_ACCESS_TOCKEN_SECRT,(err,decode)=>{
-         if(err){
-              return  res.status(401).json({error: "Unathorazed😠"})
-         }
-         req.username=decode.username;
-         next()
+      
+      jwt.verify(token,process.env.USER_ACCESS_TOKEN_SECRET,(err,decode)=>{
+           if(err){
+     return res.status(401).json({error:"Unatherized"});
+           }
+          
+           req.username=decode.username;
+           next()
       })
+
 }
