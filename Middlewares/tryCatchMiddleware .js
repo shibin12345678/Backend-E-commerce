@@ -1,15 +1,16 @@
 const tryCatchMiddleware = (trycatchHandler) => {
     return async (req, res, next) => {
-
-        try{
-            await trycatchHandler(req, res, next)
-        }
-        catch (error){
+        try {
+            await trycatchHandler(req, res, next);
+        } catch (error) {
             console.log(error);
-            res.status(500).send({status:"Failuire", message: "error", error_massage: error.message})
-
+            res.status(500).send({
+                status: "Failure",
+                message: "error",
+                error_message: error.message,
+            });
         }
-        
-    }
-}
-module.exports = tryCatchMiddleware
+    };
+};
+
+module.exports = tryCatchMiddleware;

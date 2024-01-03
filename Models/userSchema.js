@@ -2,10 +2,10 @@ const mongoos=require("mongoose");
 const bcrypt=require("bcrypt");
 
 const userSchema=new mongoos.Schema({
-       name:"String",
-       email:"String",
-       username:"String",
-       password:"String",
+          name:"String",
+          email:"String",
+          username:"String",
+          password:"String",
     //    cart: [{type:mongoos.Schema.ObjectId, ref:"Product"}],
     //    wishlist:[{type:mongoos.Schema.ObjectId,ref:"Product"}],
     //    orders:[]
