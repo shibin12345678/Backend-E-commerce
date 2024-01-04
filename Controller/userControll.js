@@ -184,7 +184,124 @@ viewCartProdut: async(req,res)=>{
 // console.log(Products);
 },
 
-}
+//ADD PRoduct Wisilist
+
+addToWishlist: async (req, res) => {
+  const userId = req.params.id;
+  if (!userId) {
+    return res
+      .status(404)
+      .json({ status: "Failear", message: "User Not Fount!" });
+  }
+  const { productId } = req.body;
+    const prod = await Products.findById(productId);
+    if (!prod) {
+      return res
+        .status(404)
+        .json({ status: "Failear", message: "Product not found" });
+    }
+
+    const findProd = await User.findOne({ _id: userId, wishlist: productId });
+    if (findProd) {
+      return res
+        .status(409)
+        .json({ message: "Product already on your wishlist " });
+    }
+ // console.log(prod);
+
+ await User.updateOne({ _id: userId }, { $push: { wishlist: prod } });
+ res.status(201).json({
+   status: "Success",
+   message: "Product Succesfuly added to wishList",
+ });
+},
+
+
+  /// show wishList
+  showWishlist: async (req, res) => {
+    const userId = req.params.id;
+    const user = await User.findById(userId);
+    if (!user) {
+      return res
+         .status(404)
+        .json({ status: "Failear", message: "User Not Found" });
+    }
+    const wishProId = user.wishlist;
+    if (wishProId.length === 0) {
+      return res
+        .status(200)
+        .json({ status: "Succes", message: "User Wishlist is Emty", data: [] });
+    }
+    const wishProducts = await Products.find({ _id: { $in: wishProId } });
+    res
+        .status(200)
+        .json({
+         status: "Success",
+         message: "Wishlist products fetched successfully",
+         data: wishProducts,
+      });
+  },
+
+
+  //Delete wisiilist 
+
+  
+  delete:async(req,res)=>{
+    const userId = req.params.id;
+    const { productId } = req.body;
+    if (!productId) {
+      return res.status(404).json({ message: "Product not Fount" });
+    }
+    const user = await User.findById(userId);
+    if (!user) {
+      return res
+        .status(404)
+        .json({ status: "Failear", message: "User Not Found" });
+    }
+    console.log(productId);
+    await User.updateOne({ _id: userId }, { $pull: { wishlist: productId } });
+    res.status(200).json({ status: "Successfully removed from wishlist" });
+  },
+
+//payment
+
+
+  // payment:async(req,res)=>{
+  //   const userId = req.params.id;
+  //   const user=await User.findOne({ _id:userId}).populate("cart");
+  //   if(!user)
+  // }
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

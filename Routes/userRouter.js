@@ -13,7 +13,9 @@ const userControll = require("../Controller/userControll");
   .get("/products/category/:categoryname",tryCatchMiddleware(userControll.productByCatogery))
   .post("/:id/cart",tryCatchMiddleware(userControll.addToCart))
   .get("/:id/carts",tryCatchMiddleware(userControll.viewCartProdut))
-
+  .post("/:id/wishlists",tryCatchMiddleware(userControll.addToWishlist))
+  .get("/:id/wishlists",tryCatchMiddleware(userControll.showWishlist))
+  .delete("/:id/wishlists",tryCatchMiddleware(userControll.delete)) 
 
 
   module.exports=router;
