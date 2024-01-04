@@ -126,10 +126,42 @@ viewProduct:async(req,res)=>{
              })
         }
  },
-/// view product from cart
+
+  //   USER PRODUCT ADD TO CART
+
+
+  addToCart: async (req, res) => {
+    const userId = req.params.id;
+   
+    const user = await User.findById(userId);
+ 
+    if (!user) {
+      return res.status(404).send({
+        status: "Failear",
+        message: "User not fount",
+      });
+    }
+    const { producId } = req.body;
+    
+
+    if (!producId) {
+      return res.status(404).send({
+        status: "Failear",
+        message: "Product not fount ☹️",
+      });
+    }
+
+    await User.updateOne({ _id: userId }, { $addToSet: { cart: producId } });
+    res.status(200).send({
+      status: "Succes",
+      message: "Succes fully product added to cart",
+    });
+  },
+///  product from cart
 viewCartProdut: async(req,res)=>{
   const userId = req.params.id;
   const user = await User.findById(userId);
+  console.log(req.body)
   if (!user) {
     return res
       .status(404)
@@ -149,7 +181,7 @@ viewCartProdut: async(req,res)=>{
     message: "Cart products fetched successfully",
     data: cartProducts,
   });
-// console.log(product);
+// console.log(Products);
 },
 
 }

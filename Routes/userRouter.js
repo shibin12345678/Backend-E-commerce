@@ -11,6 +11,9 @@ const userControll = require("../Controller/userControll");
   .get("/products",tryCatchMiddleware(userControll.viewProduct))
   .get("/products/:id",tryCatchMiddleware(userControll.productById))
   .get("/products/category/:categoryname",tryCatchMiddleware(userControll.productByCatogery))
+  .post("/:id/cart",tryCatchMiddleware(userControll.addToCart))
+  .get("/:id/carts",tryCatchMiddleware(userControll.viewCartProdut))
+
 
 
   module.exports=router;
