@@ -3,6 +3,12 @@ const jwt = require('jsonwebtoken');
 const User = require('../Models/userSchema');
 const Products = require('../Models/productSchema')
 const { joiUserSchema } = require('../Models/validationSchema');
+const Order=require("../Models/orederSchema");
+const { default: mongoose } = require("mongoose");
+const { json } = require("body-parser");
+const stripe=require("stripe")(process.env.STRIPE_SECRET_KEY);
+let sValue = [];
+
 
 //   registration
 module.exports = {
@@ -266,27 +272,116 @@ addToWishlist: async (req, res) => {
 //payment
 
 
-  // payment:async(req,res)=>{
-  //   const userId = req.params.id;
-  //   const user=await User.findOne({ _id:userId}).populate("cart");
-  //   if(!user)
-  // }
+payment: async (req, res) => {
+  const userId = req.params.id;
+ 
+  const user = await User.findOne({ _id: userId }).populate("cart");
 
-
-
-
-
-
-
-
-
-
-
-
-
-  
+  if (!user) {
+    return res.status(404).json({ message: "User Not found" });
   }
 
+  const cartProdcts = user.cart;
+  // console.log(cartProdcts);
+  if (cartProdcts.length === 0) {
+    return res
+      .status(200)
+      .json({ status: "Succes", message: "User Cart is Emty", data: [] });
+  }
+
+  const lineItems = cartProdcts.map((item) => {
+    return {
+      price_data: {
+        currency: "inr",
+        product_data: {
+          name: item.title,
+          description: item.description,
+        },
+        unit_amount: Math.round(item.price * 100),
+      },
+      quantity: 1,
+    };
+  });
+
+  session = await stripe.checkout.sessions.create({
+    payment_method_types: ["card"],
+    line_items: lineItems,
+    mode: "payment",
+    success_url: `http://localhost:3000/api/users/payment/success`, // Replace with your success URL
+    cancel_url: "http://localhost:3000/api/users/payment/cancel", // Replace with your cancel URL
+})
+
+if(!session){
+     return  res.json({
+         status:"Failur",
+         message:" Error occured on  Session side",
+     })
+}
+sValue = {
+  userId,
+  user,
+  session,
+
+  };
+  res.status(200).json({
+    status: "Success",
+    message: "Strip payment session created",
+    url: session.url,
+  });
+},
+
+success: async (req, res) => {
+  const { id, user, session } = sValue;
+  // console.log(id)
+  const userId = user._id;
+  const cartItems = user.cart;
+  const orders = await Order.create({
+    userId: id,
+    products: cartItems.map(
+      (value) => new mongoose.Types.ObjectId(value._id)
+    ),
+    order_id: session.id,
+    payment_id: `demo ${Date.now()}`,
+    total_amount: session.amount_total / 100,
+  });
+  if (!orders) {
+    return res.json({ message: "error occured while inputing to orderDB" });
+  }
+  const orderId = orders._id;
+
+  const userUpdate = await User.updateOne(
+    { _id: userId },
+    {
+      $push: { orders: orderId },
+      $set: { cart: [] },
+    },
+    { new: true }
+  );
+  console.log(userUpdate);
+
+  // console.log ("uSer Update",userUpdate)
+
+  if (userUpdate) {
+    res.status(200).json({
+      status: "Success",
+      message: "Payment Successful.",
+    });
+  } else {
+    res.status(500).json({
+      status: "Error",
+      message: "Failed to update user data.",
+    });
+  }
+},
+
+ //Cancel Product
+
+cansel: async (req, res) => {
+  res.status(200).json({
+    status: "Success",
+    message: "Payment cancelled.",
+  });
+},
 
 
 
@@ -302,8 +397,7 @@ addToWishlist: async (req, res) => {
 
 
 
-
-
+}
 
 
 

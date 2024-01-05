@@ -12,10 +12,14 @@ const userControll = require("../Controller/userControll");
   .get("/products/:id",tryCatchMiddleware(userControll.productById))
   .get("/products/category/:categoryname",tryCatchMiddleware(userControll.productByCatogery))
   .post("/:id/cart",tryCatchMiddleware(userControll.addToCart))
-  .get("/:id/carts",tryCatchMiddleware(userControll.viewCartProdut))
+  .get("/:id/cart",tryCatchMiddleware(userControll.viewCartProdut))
   .post("/:id/wishlists",tryCatchMiddleware(userControll.addToWishlist))
   .get("/:id/wishlists",tryCatchMiddleware(userControll.showWishlist))
   .delete("/:id/wishlists",tryCatchMiddleware(userControll.delete)) 
+  .post("/:id/payment",tryCatchMiddleware(userControll.payment))
+  .get("/payment/succes",tryCatchMiddleware(userControll.success))
+  .post("/paymnet/cancel",tryCatchMiddleware(userControll.cansel))
+
 
 
   module.exports=router;
