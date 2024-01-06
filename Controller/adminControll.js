@@ -4,6 +4,7 @@ const products=require("../Models/productSchema");
 const jwt=require("jsonwebtoken");
 const {joiProductSchema}=require("../Models/validationSchema");
 const Users=require("../Models/userSchema");
+const Order=require("../Models/orederSchema")
 
 
 
@@ -161,39 +162,35 @@ const allProducts = async (req, res) => {
             })
      }
 //Delete Product
-const deleteProduct=async(req,res)=>{
-        const {productId}=req.body;
+  const deleteProduct=async(req,res)=>{
+          const {productId}=req.body;
           console.log(productId)
 
-        if(!productId||!mongoos.Types.ObjectId.isValid(productId)){
-              return res.status(400).json({
+          if(!productId||!mongoos.Types.ObjectId.isValid(productId)){
+                   return res.status(400).json({
                    status:"failer",
                    message:'invalid ProducID provaided'
-              })
+       })
         }
         return res.status(200).json({
-               status:"succes",
-               message:'Product deleted succesfully'
+                  status:"succes",
+                  message:'Product deleted succesfully'
         })
 }
  // admin update product
- const updateProduct = async (req, res) => {
+    const updateProduct = async (req, res) => {
     const { value, error } = joiProductSchema.validate(req.body);
     console.log(value);
-  
     if (error) {
-      return res.status(400).json({ message: error.details[0].message });
+    return res.status(400).json({ message: error.details[0].message });
     }
-  
     const { id, title, description, price, image, category } = value;
-  
     // Use findOne instead of find for a single product
     const product = await products.findOne({ _id: id });
-  
-    // Check if the product exists
+// Check if the product exists
     if (!product) {
-      return res.status(404).json({
-        status: "Failure",
+    return res.status(404).json({
+    status: "Failure",
         message: "Product not found in the database",
       });
     }
@@ -215,6 +212,23 @@ const deleteProduct=async(req,res)=>{
     });
   };
   
+  // admin Order details
+
+
+   const orderDtails=async(req,res)=>{
+        const products= await Order.find();
+      console.log(products)
+             if(products.length===0){
+                   return res.status(200).json({
+                       message:"No products"
+                   });
+             }
+             res.status(200).json({
+                status:"succcess",
+                  message:"Successfully fetched order details",
+                  products,
+             })
+   }
   module.exports = {
     login,
     allUsers,
@@ -224,5 +238,6 @@ const deleteProduct=async(req,res)=>{
     deleteProduct,
     createProduct,
     updateProduct,
+    orderDtails
   };
   

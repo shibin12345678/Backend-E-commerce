@@ -3,27 +3,25 @@ const router = express.Router()
 const admin = require("../Controller/adminControll");
 
 
-// middleware
 
+// middleware
 const tryCatchMiddleware = require("../Middlewares/tryCatchMiddleware ")
 const verifyToken = require("../Middlewares/adminAuthMiddelware")
 // const imageUplod = require("../Middlewares/imageUplod/imageUpload")
 router.use(express.json())
-
 router
 .post("/login",tryCatchMiddleware(admin.login))
-   //apk middleware  start
+//apk middleware  start
 .use(verifyToken)
-
 // apk middleware  end
-
 .get("/users",tryCatchMiddleware(admin.allUsers))
 .get("/user/:id", tryCatchMiddleware(admin.findById))
 .post("/product", tryCatchMiddleware(admin.createProduct))
 .get("/products", tryCatchMiddleware(admin.allProducts))
-.get("/products/:id", tryCatchMiddleware(admin.productsById))
-.delete("/products", tryCatchMiddleware(admin.deleteProduct))
+.get("/products/:id",tryCatchMiddleware(admin.productsById))
+.delete("/products",tryCatchMiddleware(admin.deleteProduct))
 .put("/products", tryCatchMiddleware(admin.updateProduct))
+.get("/orders",tryCatchMiddleware(admin.orderDtails))
 
 
 
