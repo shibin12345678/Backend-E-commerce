@@ -8,22 +8,20 @@ const { default: mongoose } = require("mongoose");
 const { json } = require("body-parser");
 const stripe=require("stripe")(process.env.STRIPE_SECRET_KEY);
 let sValue = [];
-
-
 //   registration
 module.exports = {
   userRegistration: async (req, res) => {
+    console.log("rquss", req.body)
    
     const { value, error } = joiUserSchema.validate(req.body);
     const { name, email, username, password } = req.body;
-    console.log(value)
+  console.log(value)
     if (error) {
       return res.status(400).json({
         status: 'Error',
         message: 'Invalid user input ☹️. Please check your data. 🙂 ',
       });
     }
- 
     await User.create({
       name: name,
       email: email,
@@ -35,12 +33,8 @@ module.exports = {
       status: 'status',
       message: 'User registration successful',
     });
-
   },
-
-
 //   Usre login
-
   userLogin: async (req, res) => {
     console.log('......')
     const { value, error } = joiUserSchema.validate(req.body);
@@ -49,14 +43,12 @@ module.exports = {
     if (error) {
       return res.json(error.message);
     }
-
     const { username, password } = value;
     const user = await User.findOne({
       username: username,
-      
+ 
     });
-    console.log(user)
-
+ console.log(user)
     if (!user) {
        return res.status(404).json({
         status: 'error',
@@ -92,16 +84,15 @@ module.exports = {
   //view product by category
 viewProduct:async(req,res)=>{
   const products = await Products.find();
-  
+    console.log(products)
        if(!products){
             res.status(404).send({status:'error',message:"product not fount"})
        }
-       console.log("..........")
+      
        res.status(200).send({
                status:"succes",
                message:"Succes fully  fetched data",
-               data:products,
-              
+               data:products,    
        });
 },
  //  View a specific product.
@@ -132,15 +123,11 @@ viewProduct:async(req,res)=>{
              })
         }
  },
-
   //   USER PRODUCT ADD TO CART
-
-
   addToCart: async (req, res) => {
     const userId = req.params.id;
-   
     const user = await User.findById(userId);
- 
+    // console.log(user)
     if (!user) {
       return res.status(404).send({
         status: "Failear",
@@ -148,8 +135,8 @@ viewProduct:async(req,res)=>{
       });
     }
     const { producId } = req.body;
+    console.log(req.body)
     
-
     if (!producId) {
       return res.status(404).send({
         status: "Failear",
@@ -177,7 +164,7 @@ viewCartProdut: async(req,res)=>{
   if (cartProductIds.length === 0) {
     return res
       .status(200)
-      .json({ status: "Succes", message: "User Cart is Emty", data: [] });
+      .json({ status: "success", message: "User Cart is Emty", data: [] });
   }
   const cartProducts = await Products.find({ _id: { $in: cartProductIds } });
   res
@@ -302,7 +289,6 @@ payment: async (req, res) => {
       quantity: 1,
     };
   });
-
   session = await stripe.checkout.sessions.create({
     payment_method_types: ["card"],
     line_items: lineItems,
@@ -384,6 +370,26 @@ cansel: async (req, res) => {
 },
 
 
+// catogoryProducts:async(req,res)=>{
+//          const specifyP=req.body.category;
+//          const products=  await Products.find({category:specifyP});
+//           console.log(products)
+//          if(products.length > 0){
+//          return res.status(200).json({
+//          status: "success",
+//          message: "Category fetched successfully",
+//          data: products,
+//          });
+            
+//         }
+// }
+
+
+
+
+
+
+
 
 
 
@@ -398,6 +404,10 @@ cansel: async (req, res) => {
 
 
 }
+
+
+
+
 
 
 

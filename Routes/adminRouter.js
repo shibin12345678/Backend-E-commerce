@@ -16,7 +16,7 @@ router
 // apk middleware  end
 .get("/users",tryCatchMiddleware(admin.allUsers))
 .get("/user/:id", tryCatchMiddleware(admin.findById))
-.post("/product", tryCatchMiddleware(admin.createProduct))
+.post("/createProduct", tryCatchMiddleware(admin.createProduct))
 .get("/products", tryCatchMiddleware(admin.allProducts))
 .get("/products/:id",tryCatchMiddleware(admin.productsById))
 .delete("/products",tryCatchMiddleware(admin.deleteProduct))

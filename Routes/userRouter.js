@@ -20,6 +20,8 @@ const userControll = require("../Controller/userControll");
   .get("/payment/succes",tryCatchMiddleware(userControll.success))
   .post("/paymnet/cancel",tryCatchMiddleware(userControll.cansel))
 
+  .get('/specify',tryCatchMiddleware(userControll.catogoryProducts))
+
 
 
   module.exports=router;

@@ -3,8 +3,11 @@ require("dotenv").config();
 const mongoos=require("mongoose");
 const express=require("express");
 const app=express();
-const PORT=3000;
+const cors = require('cors');
+
+const PORT=5000;
 //Routes 
+app.use(cors());
 const userRouter=require("./Routes/userRouter");
 const adminRouter=require("./Routes/adminRouter");
 //Error Handler
@@ -20,7 +23,7 @@ app.use(bodyParser.json())
 app.use(express.json());
 app.use("/api/user",userRouter);
 app.use("/api/admin",adminRouter);
-// app.use(ErrorHandler);
+
 app.listen(PORT, ()=>{
    console.log("Server running",PORT)
 })

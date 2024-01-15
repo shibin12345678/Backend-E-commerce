@@ -9,9 +9,9 @@ const Order=require("../Models/orederSchema")
 
 
    //admin login
-   const login = async (req, res) => {  
+    const login = async (req, res) => {  
     const { email, password } = req.body;
-    console.log("Emil",process.env.ADMIN_EMAIL , process.env.ADMIN_PASSWORD)
+    // console.log("Emil",process.env.ADMIN_EMAIL , process.env.ADMIN_PASSWORD)
        
         if (
         email === process.env.ADMIN_EMAIL &&
@@ -86,11 +86,11 @@ const Order=require("../Models/orederSchema")
 /////-> Create a product.
 
 const  createProduct= async (req, res) => {
-    console.log('.....')
+    // console.log('.....')
     const { value, error } = joiProductSchema.validate(req.body);
-    console.log(value)
+    // console.log(value)
     const { title, description, price, image, category } = value;
-    console.log(value)
+    // console.log(value)
     if (error) {
         return res.status(400).json({ error: error.details[0].message });
     } else {
@@ -204,7 +204,7 @@ const allProducts = async (req, res) => {
         image,
         category,
       },
-      { new: true } // Return the modified document rather than the original
+      { new: true } 
     );
     res.status(200).json({
       status: "Success",
